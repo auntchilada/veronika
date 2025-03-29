@@ -1,0 +1,45 @@
+bash.function.veronika.txt
+
+veronika () { #; Veronica Lizzioncourse alias collisions discovery
+
+  # find and display alias collisions with any bash command type idiom,
+  # eg, builtin, file, function or keyword
+
+  printf '%s\n\n' "><> ; alias collisions discovery"
+
+  declare aname types t
+
+  while read -r t; do
+
+    # t == "alias foo='bar baz=dingus...'"
+    # pluck the alias [name] from the definition
+    # eg, alias name='set value foo=bar'
+
+    # peel off alias builtin keyword to get the
+    #   raw alias definition name=value
+    t=${t#alias }
+
+    # peel off the definition, the longest matching suffix of =
+    aname=${t%%=*}
+
+    # get all types of alias aname, ie,
+    #   alias,keyword,function,builtin,file
+    types=$( type -at $aname )
+
+    # if types is only alias, it's clear of collisions, continue
+    [[ $types = alias ]] && continue
+
+    type -a $aname
+    printf '%s\n' '--'
+
+    # some aliases can have the \ line continuation idiom, eg
+    # alias psf='ps maxc $pso | \
+    #   gnumfmt --field 7 --to iec --from-unit 1024 --invalid=ignore | \
+    #     fzf --style full --layout reverse --header-lines 1'
+
+    # which causes a newline in the definiiton
+    #   so only consider lines beginning with alias
+
+  done < <( alias | grep ^alias )
+
+}
