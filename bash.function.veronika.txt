@@ -1,4 +1,4 @@
-bash.function.veronika.txt
+# bash.function.veronika.txt
 
 veronika () { #; Veronica Lizzioncourse alias collisions discovery
 
